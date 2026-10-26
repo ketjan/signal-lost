@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#07131a" />
+  <title>Signal Lost — Restore the Beacon</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main id="app">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Signal Lost home"><span class="brand-mark">S</span><span>SIGNAL<br /><b>LOST</b></span></a>
+      <div class="top-status"><span class="pulse"></span><span>FIELD LINK UNSTABLE</span><span class="divider"></span><span>BUILD 0.1</span></div>
+      <button class="quiet-button" id="soundToggle" aria-label="Toggle sound">♫ <span>Audio</span></button>
+    </header>
+
+    <section class="screen active" id="lobbyScreen">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="orange">CO-OP SURVIVAL HORROR</span> · 2–6 CREW</p>
+          <h1>THE SIGNAL<br />IS <em>NOT</em><br /><span>ALONE.</span></h1>
+          <p class="lede">Crash-landed. Low on supplies. Something out there hears every move you make.</p>
+          <div class="mission-stamp"><span class="stamp-icon">⌁</span><div><b>FIRST OBJECTIVE</b><small>RESTORE THE BEACON · SURVIVE UNTIL RESCUE</small></div></div>
+        </div>
+        <div class="access-card">
+          <div class="card-kicker"><span>01</span> CREW ACCESS</div>
+          <h2>Check your radio.</h2>
+          <label for="callsign">CALLSIGN</label>
+          <input id="callsign" maxlength="16" value="Rookie" autocomplete="nickname" />
+          <button class="primary-button" id="createRoom">CREATE A CREW ROOM <span>→</span></button>
+          <div class="or-line"><span>OR JOIN A CREW</span></div>
+          <div class="join-row"><input id="roomCode" maxlength="4" placeholder="ROOM CODE" /><button class="outline-button" id="joinRoom">JOIN</button></div>
+          <p class="form-note" id="formNote">Create a room, share its code, then have up to 5 friends join. Requires internet.</p>
+        </div>
+      </section>
+
+      <section class="directory panel">
+        <div class="section-heading"><div><p class="eyebrow">LIVE FREQUENCIES</p><h2>Open crew rooms</h2></div><div class="refresh"><span class="pulse"></span> LOCAL DEMO</div></div>
+        <div class="room-list" id="roomList"></div>
+      </section>
+
+      <section class="howto">
+        <div><b>01 <span>SCAVENGE</span></b><p>Find a power cell, medkit, and repair parts.</p></div>
+        <div><b>02 <span>STAY QUIET</span></b><p>The Listener tracks sound, not sight.</p></div>
+        <div><b>03 <span>GET OUT</span></b><p>Repair the beacon and hold until rescue.</p></div>
+      </section>
+      <footer class="prototype-note">SIGNAL LOST // PLAYABLE CONCEPT BUILD <span>ROOM CODE CO-OP · PEER-TO-PEER</span></footer>
+    </section>
+
+    <section class="screen game-screen" id="gameScreen" aria-label="Mission in progress">
+      <div class="game-top"><button class="back-button" id="leaveGame">← LOBBY</button><div class="mission-title"><span class="pulse"></span> RESTORE THE BEACON <button class="room-copy" id="copyRoom" title="Copy room code">ROOM ---- · COPY</button></div><div class="objective-chip" id="objectiveChip">FIND 3 COMPONENTS</div></div>
+      <div class="game-layout">
+        <div class="world-frame">
+          <canvas id="world" width="960" height="620" aria-label="Top-down alien planet mission map"></canvas>
+          <div class="map-label label-crash">CRASH SITE</div><div class="map-label label-beacon">DISTRESS BEACON</div>
+          <div class="world-vignette"></div>
+          <div class="alert-banner" id="alertBanner">THE LISTENER IS SEARCHING</div>
+          <div class="controls-hint"><kbd>WASD</kbd> MOVE <kbd>SHIFT</kbd> RUN <kbd>E</kbd> INTERACT</div>
+          <div class="touch-controls" aria-label="Touch controls">
+            <div class="touch-dpad"><button data-key="w" aria-label="Move up">▲</button><div><button data-key="a" aria-label="Move left">◀</button><button data-key="s" aria-label="Move down">▼</button><button data-key="d" aria-label="Move right">▶</button></div></div>
+            <div class="touch-actions"><button id="touchRun" data-key="Shift">RUN</button><button id="touchInteract">INTERACT</button></div>
+          </div>
+        </div>
+        <aside class="mission-sidebar">
+          <div class="side-block crew-block"><p class="eyebrow">YOUR CREW <span id="crewCount">01 / 06</span></p><div id="crewList" class="crew-list"></div><div class="rescue-guide" id="rescueGuide"></div></div>
+          <div class="side-block"><p class="eyebrow">BEACON REPAIR</p><div class="repair-progress"><div class="repair-fill" id="repairFill"></div></div><p class="small-copy" id="repairText">Collect 3 components to begin repairs.</p></div>
+          <div class="side-block inventory-block"><p class="eyebrow">CARRYING <span id="itemCount">0 / 3</span></p><div class="inventory-items" id="inventory"></div></div>
+          <div class="radio-card"><div class="radio-head"><span class="radio-light"></span> CREW RADIO</div><p id="radioText">“Beacon’s dead. Grab what you can and keep your voice down.”</p><button id="radioButton">SEND A CALLOUT <span>↗</span></button></div>
+          <button class="stun-button" id="stunButton" disabled><span>⚡</span><div><b>PARALYSIS DOSE</b><small id="stunText">NO DOSE · SEARCH THE CRASH</small></div></button>
+        </aside>
+      </div>
+      <div class="mission-footer"><span>SHIFT TO RUNNING MAKES NOISE</span><span id="threatText">THREAT: QUIET</span><span>THE LISTENER · BLIND / SOUND-SENSITIVE</span></div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://unpkg.com/peerjs@1.5.5/dist/peerjs.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
